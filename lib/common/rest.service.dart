@@ -60,9 +60,9 @@ class RestService{
     return list;
   }
 
-  /*Future<List<FeedBackDTO>> complaintsGet() async {
+  Future<List<FeedBackDTO>> complaintsGet() async {
     RequestBody requestBody = new RequestBody();
-    requestBody.url = "vehicle/get/vehicles";
+    requestBody.url = "setting/get/feedbacktype";
     requestBody.type = "GET";
     final response = await httpService.restService(requestBody);
     print("############################# ${response}");
@@ -76,15 +76,17 @@ class RestService{
     print(list.length);
 
     return list;
-  }*/
+  }
 
   Future<bool> complaintPost(FeedBackDTO feedBackDTO) async {
     RequestBody requestBody = new RequestBody();
     requestBody.url = "vehicle/save/vehicle/feedback";
     requestBody.type = 'POST';
     requestBody.reqData = feedBackDTO.toJson();
+
     final response = await httpService.restService(requestBody);
     bool resp = response.data['Status'];
+    print("!!!!!!!!!!!!!!!!!!!!!!!!! ${resp}");
     return resp;
   }
 

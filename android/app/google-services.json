@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "680423568988",
+    "firebase_url": "https://drovakapp.firebaseio.com",
+    "project_id": "drovakapp",
+    "storage_bucket": "drovakapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:680423568988:android:02acf4776711c23a999899",
+        "android_client_info": {
+          "package_name": "com.perennial.drovakapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "680423568988-o9bgj8rsh1msseatt8schntsldeouq53.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.perennial.drovakapp",
+            "certificate_hash": "4bebf4e46497c34c5638be4665f37e981cf2396f"
+          }
+        },
+        {
+          "client_id": "680423568988-bvp7pti1ab8q8rc90uoolp5a29ag1afo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeUyec7Iaj-dDw9_PKeb-EpMGqOurfgbM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "680423568988-bvp7pti1ab8q8rc90uoolp5a29ag1afo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

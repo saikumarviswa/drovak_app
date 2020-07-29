@@ -56,8 +56,7 @@ class FeedBackDTO {
       this.statusType,
       this.vehicle});
 
-  factory FeedBackDTO.fromJson(Map<String, dynamic> json) {
-    if (json == null) return null;
+    factory FeedBackDTO.fromJson(Map<String, dynamic> json) {
     return new FeedBackDTO(
         id: json['Id'],
         feedBackTypeId: json['FeedBackTypeId'],
@@ -114,7 +113,7 @@ class FeedBackDTO {
         'FeedbackType': feedbackType != null? feedbackType.toJson():null,
         'LogInType': logInType != null? logInType.toJson():null,
         'StatusType': statusType != null ? statusType.toJson():null,
-        'Vehicle': vehicle != null ? vehicle.toJson():null
+        'Vehicle': vehicle /*!= null ? vehicle.toJson():null*/
       };
 
   static List<FeedBackDTO> parseToList(List<dynamic> dynamicList) {
@@ -135,6 +134,42 @@ class FeedBackDTO {
     }
     return odtarry;
   }
+
+  FeedBackDTO fromJson(Map<String, dynamic> json) {
+    return new FeedBackDTO(
+        id: json['Id'],
+        feedBackTypeId: json['FeedBackTypeId'],
+        regId: json['RegId'],
+        vehicleId: json['VehicleId'],
+        loginTypeId: json['LoginTypeId'],
+        dateOfTransaction: json['DateOfTransaction'],
+        comments: json['Comments'],
+        isPositive: json['IsPositive'],
+        regNumber: json['RegNumber'],
+        lon: json['Lon'],
+        lat: json['Lat'],
+        location: json['Location'],
+        status: json['Status'],
+        isActive: json['IsActive'],
+        createdBy: json['CreatedBy'],
+        createdOn: json['CreatedOn'],
+        updatedBy: json['UpdatedBy'],
+        updatedOn: json['UpdatedOn'],
+        feedbackType: json['FeedbackType'] != null
+            ? FeedbackTypeDTO.fromJson(json['FeedbackType'])
+            : null,
+        logInType: json['LogInType'] != null
+            ? LogInTypeDTO.fromJson(json['LogInType'])
+            : null,
+        statusType: json['StatusType'] != null
+            ? StatusTypeDTO.fromJson(json['StatusType'])
+            : null,
+        vehicle: json['Vehicle'] != null
+            ? VehicleDTO.fromJson(json['Vehicle'])
+            : null);
+  }
+
+
 
 
 }

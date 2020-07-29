@@ -1,7 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui';
 
 //import 'package:drovakapp/screens/addDetails.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -68,9 +72,9 @@ class _TakeImage extends State<TakeImage>{
                       height: 180,
                       width: 180,
                       alignment: Alignment.center,
-                      child: Center(child : new Image(image: new ExactAssetImage('assets/camera.png'),)
+                      child: Center(
+                          child : new Image(image: new ExactAssetImage('assets/camera.png'),)
                       )
-
                   ),
                 ),
                 SizedBox(height: 40,),
@@ -82,12 +86,11 @@ class _TakeImage extends State<TakeImage>{
                       height: 180,
                       width: 180,
                       alignment: Alignment.center,
-                      child: Center(child : new Image(image: new ExactAssetImage('assets/gallary.png'),)
+                      child: Center(
+                          child : new Image(image: new ExactAssetImage('assets/gallary.png'),)
                       )
-
                   ),
                 ),
-
               ],
             ),
           ),
@@ -114,9 +117,14 @@ class _TakeImage extends State<TakeImage>{
       quality: 50,
     );*/
 
-    setState(() {
+    setState(() async {
       imageFile = croppedFile;
       if(imageFile != null) {
+        List<int> imageBytes = await imageFile.readAsBytes();
+        print("@@@@@@@@@@@@@ $imageBytes");
+        String base64Image = base64Encode(imageBytes);
+        print("++++++++++++ $base64Image");
+
         Navigator.of(context).push(new MaterialPageRoute(
             builder: (BuildContext context) => new AddDetails(
                 imageFile: imageFile)));
@@ -126,6 +134,13 @@ class _TakeImage extends State<TakeImage>{
     });
   }
 
+  void saveFile() {
+    var bytes = utf8.encode("The quick brown fox jumps over the lazy dog");
+    var Backendless;
+    Backendless.files.saveFile(bytes, filePathName: imageFile.toString(), overwrite: true).then((savedFileURL) {
+      print("File saved. File URL - $savedFileURL");
+    });
+  }
 
 
 }

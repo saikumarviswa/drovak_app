@@ -23,7 +23,7 @@ class _AddDetails extends State<AddDetails>{
   @override
   Widget build(BuildContext context) {
 
-    print(imageFile);
+    print("####################### $imageFile");
 
     return new Scaffold(
         appBar: AppBar(
