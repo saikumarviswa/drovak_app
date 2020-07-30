@@ -6,7 +6,6 @@ import 'package:drovakapp/models/uploadImageDTO.dart';
 import 'package:drovakapp/screens/addComplaints.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:toast/toast.dart';
 
@@ -47,18 +46,19 @@ class _AddDetails extends State<AddDetails>{
 
           return uploadImageDTO;
         }
-
-        restService.uploadImage(uploadImageDto()).then((data) {
+        Toast.show("Picture uploaded successfully!", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
+        Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new AddComplaints(imageFile:action)));
+        /*restService.uploadImage(uploadImageDto()).then((data) {
           if (data != null) {
             //print(data);
             //print(data.name);
             Toast.show("Picture uploaded successfully!", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
-            Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new AddComplaints()));
-            /*if (Navigator.canPop(context)) {
+
+            *//*if (Navigator.canPop(context)) {
               Navigator.pop(context);
             } else {
               SystemNavigator.pop();
-            }*/
+            }*//*
           } else {
             Toast.show("Faild", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
             if (Navigator.canPop(context)) {
@@ -75,10 +75,11 @@ class _AddDetails extends State<AddDetails>{
             SystemNavigator.pop();
           }
         });
-
+*/
 
       });
       print("Profile Picture uploaded ");
+
       //Toast.show("Picture uploaded", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
     });
   }

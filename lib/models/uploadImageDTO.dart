@@ -48,5 +48,15 @@ class UploadImageDTO{
     return odtarry;
   }
 
+  UploadImageDTO fromJson(Map<String, dynamic> json) {
+    return UploadImageDTO(
+      userId: json["userId"],
+      vehicleId: json["vehicleId"],
+      regid: json["regid"],
+      feedbackId: json["feedbackId"],
+      image: json["image"],
+    );
+  }
+
 
 }

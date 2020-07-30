@@ -1,6 +1,5 @@
 
 
-import 'package:drovakapp/screens/register.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

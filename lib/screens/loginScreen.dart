@@ -2,6 +2,7 @@ import 'package:drovakapp/common/rest.service.dart';
 import 'package:drovakapp/screens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:fluttertoast/fluttertoast.dart';
 import 'package:toast/toast.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
@@ -174,11 +175,12 @@ class _LogInScreen extends State<LoginScreen>{
                                       textColor: Colors.white,
                                       fontSize: 16.0
                                   );*/
-                                  /*SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                                sharedPreferences.setString("userName", onValue.name);
-                                print("ZZZZZZZZZZZZZZZ ${onValue.emailId}");
-                                sharedPreferences.setString("mobileNo", onValue.mobileNo);
-                                sharedPreferences.setString("emailId", onValue.emailId);*/
+                                  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                                  sharedPreferences.setString("userName", onValue.name);
+                                  print("ZZZZZZZZZZZZZZZ ${onValue.emailId}");
+                                  sharedPreferences.setString("mobileNo", onValue.mobileNo);
+                                  sharedPreferences.setString("emailId", onValue.emailId);
+                                  sharedPreferences.setInt("UserId", onValue.id);
                                   Navigator.pushReplacement(context,
                                     MaterialPageRoute(
                                         builder: (context) => DashBoard()),);

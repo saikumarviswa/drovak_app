@@ -5,7 +5,6 @@ import 'FeedbackTypeDTO.dart';
 import 'LogInTypeDTO.dart';
 import 'StatusTypeDTO.dart';
 import 'VehicleDTO.dart';
-import 'VehicleDTO.dart';
 
 class FeedBackDTO {
   int id;
@@ -26,6 +25,7 @@ class FeedBackDTO {
   DateTime createdOn;
   int updatedBy;
   DateTime updatedOn;
+  String imagePath;
 
   FeedbackTypeDTO feedbackType;
   LogInTypeDTO logInType;
@@ -54,7 +54,8 @@ class FeedBackDTO {
       this.feedbackType,
       this.logInType,
       this.statusType,
-      this.vehicle});
+      this.vehicle,
+      this.imagePath});
 
     factory FeedBackDTO.fromJson(Map<String, dynamic> json) {
     return new FeedBackDTO(
@@ -76,6 +77,7 @@ class FeedBackDTO {
         createdOn: json['CreatedOn'],
         updatedBy: json['UpdatedBy'],
         updatedOn: json['UpdatedOn'],
+        imagePath: json['ImagePath'],
         feedbackType: json['FeedbackType'] != null
             ? FeedbackTypeDTO.fromJson(json['FeedbackType'])
             : null,
@@ -109,11 +111,12 @@ class FeedBackDTO {
         'CreatedOn': createdOn,
         'UpdatedBy': updatedBy,
         'UpdatedOn': updatedOn,
+        'ImagePath':imagePath,
 
         'FeedbackType': feedbackType != null? feedbackType.toJson():null,
         'LogInType': logInType != null? logInType.toJson():null,
         'StatusType': statusType != null ? statusType.toJson():null,
-        'Vehicle': vehicle /*!= null ? vehicle.toJson():null*/
+        'Vehicle': vehicle != null ? vehicle.toJson():null
       };
 
   static List<FeedBackDTO> parseToList(List<dynamic> dynamicList) {

@@ -1,7 +1,6 @@
 import 'package:drovakapp/common/common.util.dart';
 
 import 'RoleDTO.dart';
-import 'RoleDTO.dart';
 
 class UserDTO{
   int id;

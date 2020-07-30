@@ -1,13 +1,11 @@
 
 import 'package:drovakapp/common/rest.service.dart';
 import 'package:drovakapp/models/FeedBackDTO.dart';
-import 'package:drovakapp/models/FeedbackTypeDTO.dart';
-import 'package:drovakapp/models/LogInTypeDTO.dart';
-import 'package:drovakapp/models/StatusTypeDTO.dart';
 import 'package:drovakapp/screens/postsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 //import 'package:fluttertoast/fluttertoast.dart';
 
@@ -15,9 +13,10 @@ import '../FadeAnimation.dart';
 
 class AddComplaints extends StatefulWidget{
 
-  AddComplaints({Key key}) : super(key : key);
+  String imageFile;
+  AddComplaints({Key key, @required this.imageFile}) : super(key : key);
 
-  _AddComplaints createState() => _AddComplaints();
+  _AddComplaints createState() => _AddComplaints(imageFile);
 }
 
 class _AddComplaints extends State<AddComplaints>{
@@ -32,19 +31,24 @@ class _AddComplaints extends State<AddComplaints>{
   TextEditingController descriptionController = new TextEditingController();
 
 
+  String imageLink;
+  _AddComplaints(String imageLink){
+    this.imageLink = imageLink;
+  }
 
 
   @override
   void initState() {
     super.initState();
     this._getAddressFromLatLng();
+    this._loadCounter();
   }
 
   RestService restService = new RestService();
   FeedBackDTO prepareFedback(){
     FeedBackDTO feedBackDTO = new FeedBackDTO();
 
-    FeedbackTypeDTO feedbackTypeDTO = new FeedbackTypeDTO();
+    /*FeedbackTypeDTO feedbackTypeDTO = new FeedbackTypeDTO();
     feedbackTypeDTO.id = 1;
     feedbackTypeDTO.description = "Rash Driving";
     feedbackTypeDTO.name = vehicNoController.text;
@@ -60,21 +64,43 @@ class _AddComplaints extends State<AddComplaints>{
     statusTypeDTO.id = 1;
     statusTypeDTO.description = "Rash Driving";
     statusTypeDTO.name = vehicNoController.text;
-    statusTypeDTO.isActive = true;
+    statusTypeDTO.isActive = true;*/
 
 
     feedBackDTO.regNumber = vehicNoController.text;
     feedBackDTO.location = areaController.text;
+    feedBackDTO.comments = descriptionController.text;
     feedBackDTO.isActive = true;
+    feedBackDTO.imagePath = imageLink;
     /*feedBackDTO.lat =_currentPosition.latitude.toString();
     feedBackDTO.lon = _currentPosition.longitude.toString();
     feedBackDTO.location =_currentAddress;*/
     feedBackDTO.isPositive = false;
-    feedBackDTO.feedbackType = feedbackTypeDTO;
-    feedBackDTO.logInType = logInTypeDTO;
-    feedBackDTO.statusType = statusTypeDTO;
+    feedBackDTO.status = 1; //new complaint
+    feedBackDTO.regId = userId; //TODO
+    feedBackDTO.createdBy = userId;  //TODO
+    feedBackDTO.feedBackTypeId = 1;
+    feedBackDTO.loginTypeId = 1;
 
+
+    return feedBackDTO;
     //print(_currentPosition.latitude.toString());
+  }
+
+  String userName;
+  String mobileNumber;
+  String emailId;
+  int userId;
+
+  _loadCounter() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+
+      userName = (prefs.getString('userName') ?? null);
+      mobileNumber = (prefs.getString('mobileNo') ?? null);
+      emailId = (prefs.getString('emailId') ?? null);
+      userId = (prefs.getInt("userId") ?? null);
+    });
   }
 
 
@@ -137,6 +163,7 @@ class _AddComplaints extends State<AddComplaints>{
                                           border: Border(bottom: BorderSide(color: Colors.grey[200]))
                                       ),
                                       child: TextField(
+                                        controller: vehicNoController,
                                         decoration: InputDecoration(
                                             hintText: "Enter Vehicle No",
                                             hintStyle: TextStyle(color: Colors.grey),
@@ -169,6 +196,7 @@ class _AddComplaints extends State<AddComplaints>{
                                           border: Border(bottom: BorderSide(color: Colors.grey[200]))
                                       ),
                                       child: TextField(
+                                        controller: areaController,
                                         decoration: InputDecoration(
                                             hintText: "Enter Area",
                                             hintStyle: TextStyle(color: Colors.grey),
@@ -202,6 +230,7 @@ class _AddComplaints extends State<AddComplaints>{
                                       ),
                                       child: TextField(
                                         maxLines: 5,
+                                        controller: descriptionController,
                                         decoration: InputDecoration(
                                             hintText: "Enter Description",
                                             hintStyle: TextStyle(color: Colors.grey),
@@ -305,7 +334,9 @@ class _AddComplaints extends State<AddComplaints>{
                                   width: 100,
                                   child: InkWell(
                                     onTap: (){
+                                      print("************************** ${vehicNoController.text}");
                                       restService.complaintPost(prepareFedback()).then((data) {
+                                        print(data);
                                         if (data != null) {
                                           //print(data.name);
                                           Toast.show("Complaiant Posted successfully!", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
@@ -351,11 +382,11 @@ class _AddComplaints extends State<AddComplaints>{
                                                 backgroundColor: Colors.red,
                                                 textColor: Colors.white,
                                                 fontSize: 16.0);*/
-                                        if (Navigator.canPop(context)) {
+                                        /*if (Navigator.canPop(context)) {
                                           Navigator.pop(context);
                                         } else {
                                           SystemNavigator.pop();
-                                        }
+                                        }*/
                                       });
                                       //FlutterToast.showToast(msg: "Submit Successful");
                                     },

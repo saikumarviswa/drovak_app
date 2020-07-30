@@ -48,7 +48,7 @@ class RestService{
     requestBody.url = "vehicle/get/vehicles";
     requestBody.type = "GET";
     final response = await httpService.restService(requestBody);
-    print("############################# ${response}");
+    print("############################# {$response}");
     // var data = jsonDecode(response.data["ResultData"])['ResultData'] as List;
     //print(data);
 
@@ -66,7 +66,7 @@ class RestService{
     requestBody.url = "setting/get/feedbacktype";
     requestBody.type = "GET";
     final response = await httpService.restService(requestBody);
-    print("############################# ${response}");
+    print("############################# {$response}");
     // var data = jsonDecode(response.data["ResultData"])['ResultData'] as List;
     //print(data);
 
@@ -86,8 +86,9 @@ class RestService{
     requestBody.reqData = feedBackDTO.toJson();
 
     final response = await httpService.restService(requestBody);
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!*********************** {$response}");
     bool resp = response.data['Status'];
-    print("!!!!!!!!!!!!!!!!!!!!!!!!! ${resp}");
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!*********************** {$resp}");
     return resp;
   }
 
@@ -99,7 +100,7 @@ class RestService{
 
     final response = await httpService.restService(requestBody);
     bool resp = response.data['Status'];
-    print("!!!!!!!!!!!!!!!!!!!!!!!!! ${resp}");
+    print("!!!!!!!!!!!!!!!!!!!!!!!!! {$resp}");
     return resp;
   }
 

@@ -1,14 +1,9 @@
-
-
-
-
-import 'package:drovakapp/screens/loginScreen.dart';
 import 'package:drovakapp/screens/postsScreen.dart';
 import 'package:drovakapp/screens/takeImage.dart';
 import 'package:drovakapp/screens/userProfile.dart';
 import 'package:drovakapp/screens/yourVehicles.dart';
 import 'package:flutter/material.dart';
-import 'package:sweet_alert_dialogs/sweet_alert_dialogs.dart';
+//import 'package:sweet_alert_dialogs/sweet_alert_dialogs.dart';
 
 import '../Post.dart';
 import 'notificationsScreen.dart';
@@ -180,30 +175,30 @@ class _DashBoard extends State<DashBoard>{
                     ],
                   ),
                   onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return RichAlertDialog(
-                            alertTitle: richTitle("Are You Sure?"),
-                            alertSubtitle: richSubtitle("You Want To Logout"),
-                            alertType: RichAlertType.WARNING,
-                            actions: <Widget>[
-                              FlatButton(
-                                child: Text("Yes"),
-                                onPressed: (){
-                                  Navigator.pop(context,true);
-                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()),);
-                                  },
-                              ),
-                              FlatButton(
-                                child: Text("No"),
-                                onPressed: (){
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
-                          );
-                        });
+                    // showDialog(
+                    //     context: context,
+                    //     builder: (BuildContext context) {
+                    //       return RichAlertDialog(
+                    //         alertTitle: richTitle("Are You Sure?"),
+                    //         alertSubtitle: richSubtitle("You Want To Logout"),
+                    //         alertType: RichAlertType.WARNING,
+                    //         actions: <Widget>[
+                    //           FlatButton(
+                    //             child: Text("Yes"),
+                    //             onPressed: (){
+                    //               Navigator.pop(context,true);
+                    //               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()),);
+                    //               },
+                    //           ),
+                    //           FlatButton(
+                    //             child: Text("No"),
+                    //             onPressed: (){
+                    //               Navigator.pop(context);
+                    //             },
+                    //           ),
+                    //         ],
+                    //       );
+                    //     });
                     //Navigator.of(context).pop();
                     //Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new ReceivedPosts()));
                   }

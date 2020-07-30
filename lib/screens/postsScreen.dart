@@ -1,6 +1,5 @@
 import 'package:drovakapp/common/rest.service.dart';
 import 'package:drovakapp/models/FeedBackDTO.dart';
-import 'package:drovakapp/postsWidget.dart';
 import 'package:drovakapp/screens/singlePostScreen.dart';
 import 'package:flutter/material.dart';
 
