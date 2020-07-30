@@ -1,6 +1,7 @@
 import 'package:drovakapp/common/request.body.dart';
 import 'package:drovakapp/models/FeedBackDTO.dart';
 import 'package:drovakapp/models/RegistrationModel.dart';
+import 'package:drovakapp/models/uploadImageDTO.dart';
 import 'package:drovakapp/models/userDTO.dart';
 import 'package:drovakapp/models/vehicleDTO.dart';
 import 'http.service.dart';
@@ -83,6 +84,18 @@ class RestService{
     requestBody.url = "vehicle/save/vehicle/feedback";
     requestBody.type = 'POST';
     requestBody.reqData = feedBackDTO.toJson();
+
+    final response = await httpService.restService(requestBody);
+    bool resp = response.data['Status'];
+    print("!!!!!!!!!!!!!!!!!!!!!!!!! ${resp}");
+    return resp;
+  }
+
+  Future<bool> uploadImage(UploadImageDTO uploadImageDTO) async {
+    RequestBody requestBody = new RequestBody();
+    requestBody.url = "vehicle/upload/image";
+    requestBody.type = 'POST';
+    requestBody.reqData = uploadImageDTO.toJson();
 
     final response = await httpService.restService(requestBody);
     bool resp = response.data['Status'];

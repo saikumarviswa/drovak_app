@@ -120,10 +120,10 @@ class _TakeImage extends State<TakeImage>{
     setState(() async {
       imageFile = croppedFile;
       if(imageFile != null) {
-        List<int> imageBytes = await imageFile.readAsBytes();
+        List<int> imageBytes = await croppedFile.readAsBytes();
         print("@@@@@@@@@@@@@ $imageBytes");
-        String base64Image = base64Encode(imageBytes);
-        print("++++++++++++ $base64Image");
+        /*String base64Image = base64Encode(imageBytes);
+        print("++++++++++++ $base64Image");*/
 
         Navigator.of(context).push(new MaterialPageRoute(
             builder: (BuildContext context) => new AddDetails(
@@ -134,13 +134,6 @@ class _TakeImage extends State<TakeImage>{
     });
   }
 
-  void saveFile() {
-    var bytes = utf8.encode("The quick brown fox jumps over the lazy dog");
-    var Backendless;
-    Backendless.files.saveFile(bytes, filePathName: imageFile.toString(), overwrite: true).then((savedFileURL) {
-      print("File saved. File URL - $savedFileURL");
-    });
-  }
 
 
 }

@@ -2,6 +2,7 @@
 
 import 'package:drovakapp/common/rest.service.dart';
 import 'package:drovakapp/models/RegistrationModel.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
@@ -22,7 +23,11 @@ class _Register extends State<Register>{
 
 
   DateTime selectedDate = DateTime.now();
-  //FirebaseAuth _auth = FirebaseAuth.instance;
+  String phoneNo;
+  String smsOTP;
+  String verificationId;
+  String errorMessage = '';
+  FirebaseAuth _auth = FirebaseAuth.instance;
   TextEditingController userNameController = new TextEditingController();
   TextEditingController mobileController = new TextEditingController();
   TextEditingController emailController = new TextEditingController();
@@ -30,10 +35,7 @@ class _Register extends State<Register>{
   TextEditingController conformPasswordController = new TextEditingController();
   TextEditingController insuranceNoController = new TextEditingController();
   RestService restService = new RestService();
-  String phoneNo;
-  String smsOTP;
-  String verificationId;
-  String errorMessage = '';
+
 
   RegistrationModel prepareRegistration(){
     RegistrationModel registrationModel = new RegistrationModel();
@@ -321,18 +323,30 @@ class _Register extends State<Register>{
                                       SizedBox(height: 30,),
                                       InkWell(
                                         onTap: (){
-                                          restService.registerUser(prepareRegistration()).then((data) {
+
+                                          if(userNameController.text.length > 0 && mobileController.text.length == 10 && emailController.text.length > 0 && passwordController.text.length >= 6) {
+                                            if(passwordController.text == conformPasswordController.text) {
+                                              verifyPhone();
+                                            }else{
+                                              Toast.show("Password Mismatch, Please Enter Valid Password", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
+                                            }
+                                          }else if(userNameController.text.length > 0 && mobileController.text.length != 10 && emailController.text.length > 0){
+                                            Toast.show("Please Enter Valid Mobile Number", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
+                                          }else{
+                                            Toast.show("Please Enter Required Fields", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
+                                          }
+                                          /*restService.registerUser(prepareRegistration()).then((data) {
                                             if (data != null) {
                                               //print(data.name);
                                               Toast.show("Registration completed successfully!", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
-                                              /*FlutterToast.showToast(
+                                              *//*FlutterToast.showToast(
                                                   msg: "Registration completed successfully!",
                                                   toastLength: Toast.LENGTH_SHORT,
                                                   gravity: ToastGravity.BOTTOM,
                                                   timeInSecForIosWeb: 1,
                                                   backgroundColor: Colors.red,
                                                   textColor: Colors.white,
-                                                  fontSize: 16.0);*/
+                                                  fontSize: 16.0);*//*
                                               if (Navigator.canPop(context)) {
                                                 Navigator.pop(context);
                                               } else {
@@ -340,14 +354,14 @@ class _Register extends State<Register>{
                                               }
                                             } else {
                                               Toast.show("Failed", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
-                                              /*FlutterToast.showToast(
+                                              *//*FlutterToast.showToast(
                                                   msg: "Failed",
                                                   toastLength: Toast.LENGTH_SHORT,
                                                   gravity: ToastGravity.BOTTOM,
                                                   timeInSecForIosWeb: 1,
                                                   backgroundColor: Colors.red,
                                                   textColor: Colors.white,
-                                                  fontSize: 16.0);*/
+                                                  fontSize: 16.0);*//*
                                               if (Navigator.canPop(context)) {
                                                 Navigator.pop(context);
                                               } else {
@@ -356,20 +370,20 @@ class _Register extends State<Register>{
                                             }
                                           }).catchError((error) {
                                             Toast.show("Error", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
-                                            /*FlutterToast.showToast(
+                                            *//*FlutterToast.showToast(
                                                 msg: "Error",
                                                 toastLength: Toast.LENGTH_SHORT,
                                                 gravity: ToastGravity.BOTTOM,
                                                 timeInSecForIosWeb: 1,
                                                 backgroundColor: Colors.red,
                                                 textColor: Colors.white,
-                                                fontSize: 16.0);*/
+                                                fontSize: 16.0);*//*
                                             if (Navigator.canPop(context)) {
                                               Navigator.pop(context);
                                             } else {
                                               SystemNavigator.pop();
                                             }
-                                          });
+                                          });*/
                                         },
                                         child: new Container(
                                           width: 280.0,
@@ -391,7 +405,7 @@ class _Register extends State<Register>{
                                         ),
                                       ),
                                       SizedBox(height: 30,),
-                                      Container(
+                                      /*Container(
                                         width: 280.0,
                                         height: 45.0,
                                         alignment: FractionalOffset.center,
@@ -409,7 +423,7 @@ class _Register extends State<Register>{
                                               style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 18.0),
                                             )
                                         ),
-                                      )
+                                      )*/
                                     ],
                                   ),
                                 )
@@ -427,33 +441,19 @@ class _Register extends State<Register>{
     );
   }
 
-  /*void saveReg(){
+  void saveReg(){
     restService.registerUser(prepareRegistration()).then((data) {
       if (data != null) {
         //print(data);
         //print(data.name);
-        FlutterToast.showToast(
-            msg: "Registration Completed successfully!",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        Toast.show("Registration completed successfully!", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
         if (Navigator.canPop(context)) {
           Navigator.pop(context);
         } else {
           SystemNavigator.pop();
         }
       } else {
-        FlutterToast.showToast(
-            msg: "Failed",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        Toast.show("Faild", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
         if (Navigator.canPop(context)) {
           Navigator.pop(context);
         } else {
@@ -461,14 +461,7 @@ class _Register extends State<Register>{
         }
       }
     }).catchError((error) {
-      FlutterToast.showToast(
-          msg: "Error",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          fontSize: 16.0);
+      Toast.show("Error", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
       if (Navigator.canPop(context)) {
         Navigator.pop(context);
       } else {
@@ -478,6 +471,7 @@ class _Register extends State<Register>{
   }
 
   Future<void> verifyPhone() async {
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ");
     final PhoneCodeSent smsOTPSent = (String verId, [int forceCodeResend]) {
       this.verificationId = verId;
       smsOTPDialog(context).then((value) {
@@ -493,42 +487,29 @@ class _Register extends State<Register>{
             //Starts the phone number verification process for the given phone number.
             //Either sends an SMS with a 6 digit code to the phone number specified, or sign's the user in and [verificationCompleted] is called.
             this.verificationId = verId;
-            FlutterToast.showToast(msg: verId);
+
           },
           codeSent:
           smsOTPSent, // WHEN CODE SENT THEN WE OPEN DIALOG TO ENTER OTP.
           timeout: const Duration(seconds: 30),
           verificationCompleted: (AuthCredential phoneAuthCredential) {
             print(phoneAuthCredential);
-            FlutterToast.showToast(msg: "User Verified");
+            Toast.show("User Verified", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
 
 
             restService.registerUser(prepareRegistration()).then((data) {
               if (data != null) {
                 // print(data);
                 // print(data.name);
-                FlutterToast.showToast(
-                    msg:"Registration completed Successfully!",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.red,
-                    textColor: Colors.white,
-                    fontSize: 16.0);
+                Toast.show("Registration completed Successfully!", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
+
                 if (Navigator.canPop(context)) {
                   Navigator.pop(context);
                 } else {
                   SystemNavigator.pop();
                 }
               } else {
-                FlutterToast.showToast(
-                    msg: "Failed",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Colors.red,
-                    textColor: Colors.white,
-                    fontSize: 16.0);
+                Toast.show("Faild", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
                 if (Navigator.canPop(context)) {
                   Navigator.pop(context);
                 } else {
@@ -536,14 +517,7 @@ class _Register extends State<Register>{
                 }
               }
             }).catchError((error) {
-              FlutterToast.showToast(
-                  msg: "Error",
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: Colors.red,
-                  textColor: Colors.white,
-                  fontSize: 16.0);
+              Toast.show("Error", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
               if (Navigator.canPop(context)) {
                 Navigator.pop(context);
               } else {
@@ -594,28 +568,14 @@ class _Register extends State<Register>{
                       restService.registerUser(prepareRegistration()).then((data) {
                         if (data != null) {
                           //print(data.name);
-                          FlutterToast.showToast(
-                              msg: "Registration completed successfully!",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
+                          Toast.show("Registration completed Successfully!", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
                           if (Navigator.canPop(context)) {
                             Navigator.pop(context);
                           } else {
                             SystemNavigator.pop();
                           }
                         } else {
-                          FlutterToast.showToast(
-                              msg: "Failed",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.white,
-                              fontSize: 16.0);
+                          Toast.show("Faild", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
                           if (Navigator.canPop(context)) {
                             Navigator.pop(context);
                           } else {
@@ -623,14 +583,7 @@ class _Register extends State<Register>{
                           }
                         }
                       }).catchError((error) {
-                        FlutterToast.showToast(
-                            msg: "Error",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.red,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
+                        Toast.show("Error", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
                         if (Navigator.canPop(context)) {
                           Navigator.pop(context);
                         } else {
@@ -639,8 +592,8 @@ class _Register extends State<Register>{
                       });
 
                       //FlutterToast.showToast(msg: "Hello");
-                      *//*Navigator.of(context).pop();
-                      Navigator.of(context).pushReplacementNamed('/homepage');*//*
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushReplacementNamed('/homepage');
                     } else {
                       //FlutterToast.showToast(msg: "Hello1111111111111");
                       signIn();
@@ -666,28 +619,15 @@ class _Register extends State<Register>{
       restService.registerUser(prepareRegistration()).then((data) {
         if (data != null) {
           //print(data.name);
-          FlutterToast.showToast(
-              msg: "Registration completed successfully!",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16.0);
+          Toast.show("Registration completed Successfully!", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
+
           if (Navigator.canPop(context)) {
             Navigator.pop(context);
           } else {
             SystemNavigator.pop();
           }
         } else {
-          FlutterToast.showToast(
-              msg: "Failed",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16.0);
+          Toast.show("Faild", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
           if (Navigator.canPop(context)) {
             Navigator.pop(context);
           } else {
@@ -695,30 +635,23 @@ class _Register extends State<Register>{
           }
         }
       }).catchError((error) {
-        FlutterToast.showToast(
-            msg: "Error",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0);
+        Toast.show("Error", context,duration: Toast.LENGTH_LONG,gravity: Toast.BOTTOM);
         if (Navigator.canPop(context)) {
           Navigator.pop(context);
         } else {
           SystemNavigator.pop();
         }
       });
-      *//*Navigator.of(context).pop();
-      Navigator.of(context).pushReplacementNamed('/homepage');*//*
+      Navigator.of(context).pop();
+      Navigator.of(context).pushReplacementNamed('/homepage');
     } catch (e) {
       handleError(e);
     }
   }
 
-  handleError(PlatformException error) {
+  handleError(Object error) {
     print(error);
-    switch (error.code) {
+    switch (error.toString()) {
       case 'ERROR_INVALID_VERIFICATION_CODE':
         FocusScope.of(context).requestFocus(new FocusNode());
         errorMessage = 'Invalid Code';
@@ -729,11 +662,11 @@ class _Register extends State<Register>{
         });
         break;
       default:
-        errorMessage = error.message;
+        errorMessage = error.toString();
         print(errorMessage);
 
         break;
     }
-  }*/
+  }
 
 }

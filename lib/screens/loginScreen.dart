@@ -1,6 +1,7 @@
 import 'package:drovakapp/common/rest.service.dart';
 import 'package:drovakapp/screens/register.dart';
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 //import 'package:fluttertoast/fluttertoast.dart';
 import 'package:toast/toast.dart';
 //import 'package:shared_preferences/shared_preferences.dart';
@@ -22,9 +23,11 @@ class _LogInScreen extends State<LoginScreen>{
 
 
 
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    ProgressDialog pr = new ProgressDialog(context);
+
     return Scaffold(
         body: new Container(
           decoration: new BoxDecoration(
@@ -152,6 +155,8 @@ class _LogInScreen extends State<LoginScreen>{
                               Toast.show("Please Enter UserName And Password", context, duration: Toast.LENGTH_LONG, gravity:Toast.BOTTOM);
 
                             }else{
+                              pr = ProgressDialog(context,type: ProgressDialogType.Normal, isDismissible: false, showLogs: true);
+                              pr.show();
                               RestService restService = new RestService();
                               restService.getUser(userNameController.text,
                                   passwordControllre.text).then((
@@ -159,6 +164,7 @@ class _LogInScreen extends State<LoginScreen>{
                                 print("@@@@@@@@@@@@@@@@@@@@@@@@ $onValue");
                                 if (onValue != null) {
                                   Toast.show(onValue.toString(), context, duration: Toast.LENGTH_LONG, gravity:Toast.BOTTOM);
+                                  pr.hide();
                                   /*FlutterToast.showToast(
                                       msg: onValue.toString(),
                                       toastLength: Toast.LENGTH_SHORT,
@@ -177,6 +183,7 @@ class _LogInScreen extends State<LoginScreen>{
                                     MaterialPageRoute(
                                         builder: (context) => DashBoard()),);
                                 } else {
+                                  pr.hide();
                                   Toast.show("Faild", context, duration: Toast.LENGTH_LONG, gravity:Toast.BOTTOM);
                                   /*FlutterToast.showToast(
                                       msg: "Faild",
@@ -189,6 +196,7 @@ class _LogInScreen extends State<LoginScreen>{
                                   );*/
                                 }
                               }).catchError((error){
+                                pr.hide();
                                 Toast.show("Error!, Please Enter Valid Username And password", context, duration: Toast.LENGTH_LONG, gravity:Toast.BOTTOM);
                               });
                             }
@@ -215,7 +223,7 @@ class _LogInScreen extends State<LoginScreen>{
                         ),
 
                         SizedBox(height: 20,),
-                        Container(
+                        /*Container(
                           width: 280.0,
                           height: 45.0,
                           alignment: FractionalOffset.center,
@@ -233,17 +241,23 @@ class _LogInScreen extends State<LoginScreen>{
                                 style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 14.0),
                               )
                           ),
-                        ),
+                        ),*/
                         SizedBox(height: 60,),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            child: Text(
-                              "Dont have an account?Signin",
-                              style: TextStyle(color: Colors.white),
+                        InkWell(
+                          onTap: (){
+                            Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new Register()));
+                          },
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              child: Text(
+                                "Dont have an account?Signin",
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
                           ),
                         ),
+
                       ],
                     ),
                   ],

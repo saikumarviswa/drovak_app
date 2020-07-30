@@ -32,6 +32,9 @@ dependencies:
   toast: ^0.1.5
   sweet_alert_dialogs: ^0.2.0
   geolocator: ^5.3.2+2
+  firebase_auth: ^0.16.1
+  progress_dialog: ^1.2.4
+  firebase_storage: ^3.1.6
 
 dev_dependencies:
   flutter_test:
